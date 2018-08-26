@@ -1,0 +1,61 @@
+version: "3"
+services:
+    nginx:
+        build:
+            dockerfile: ./docker/nginx.dockerfile
+            context: .
+        image: dev-test-nginx
+        container_name: dev-test-nginx
+        ports:
+            - 80:80
+        networks: 
+            - dev-test-network
+        depends_on: 
+            - "application"
+        volumes:
+            - ./src:/var/www/dev-test
+    
+    application:
+        image: dev-test-php-fpm
+        build:
+            dockerfile: ./docker/php-fpm.dockerfile
+            context: .
+        container_name: dev-test-application
+        volumes:
+            - ./src:/var/www/dev-test
+        working_dir: /var/www/dev-test
+        command: bash -c "composer install && php artisan migrate && php-fpm"
+        networks:
+            - dev-test-network
+        depends_on:
+            - "mysql"
+
+    mysql:
+        image: mysql
+        container_name: dev-test-mysql
+        environment:
+            MYSQL_LOG_CONSOLE: 0
+            MYSQL_ROOT_PASSWORD: 123456
+            MYSQL_DATABASE: dev_test
+        volumes:
+            - ./data:/var/lib/mysql
+        networks:
+            - dev-test-network
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        container_name: dev-test-phpmyadmin
+        ports:
+            - 8080:80
+        environment:
+            - PMA_ARBITRARY=1
+        networks:
+            - dev-test-network
+        links:
+            - mysql
+        depends_on:
+            - "mysql"
+
+networks:
+    dev-test-network:
+        driver: bridge
