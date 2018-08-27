@@ -20,6 +20,6 @@ $factory->define(App\Models\User::class, function (Faker $faker) {
         'username' => $faker->unique()->userName,
         'email' => $faker->unique()->safeEmail,
         'birthday' => $faker->dateTimeThisCentury(),
-        'password' => Hash::make(str_random(15)),
+        'password' => str_random(15),
     ];
 });

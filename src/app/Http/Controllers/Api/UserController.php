@@ -28,7 +28,7 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
-        return response()->create(UserRepository::save($request));
+        return response()->create(UserRepository::save($request->validated()));
     }
 
     /**
@@ -51,7 +51,7 @@ class UserController extends Controller
      */
     public function update(UserRequest $request, $id)
     {
-        return response()->update(UserRepository::save($request, $id));
+        return response()->update(UserRepository::save($request->validated(), $id));
     }
 
     /**

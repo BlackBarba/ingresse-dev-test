@@ -2,19 +2,21 @@
 
 namespace App\Repositories;
 use App\Models\User as UserModel;
-use App\Http\Requests\User as UserRequest;
+use Illuminate\Support\Facades\Hash;
 
 class User {
-    public static function save (UserRequest $request, $user = null) {
+    public static function save ($params, $user = null) {
         if ($user) {
             $user = UserModel::findOrFail($user);
         } else {
             $user = new UserModel;
         }
 
-        $validated = $request->validated();
+        if (isset($params['password'])) {
+            $params['password'] = Hash::make($params['password']);
+        }
 
-        foreach ($validated as $key => $value) {
+        foreach ($params as $key => $value) {
             $user->{$key} = $value;
         }
 
