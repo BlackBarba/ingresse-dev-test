@@ -267,4 +267,49 @@ class UserControllerTest extends TestCase
                     'username'
                  ]);
     }
+
+    /**
+     * Test delete one user
+     *
+     * @return void
+     */
+    public function testDeleteUser()
+    {
+        $user = factory(User::class)->create([
+            'password' => Hash::make(str_random(15))
+        ]);
+
+        $response = $this->delete(route('users.destroy', $user->id));
+        $response->assertOk()
+                 ->assertJsonStructure([
+                    'message',
+                    'data' => [
+                        'name',
+                        'username',
+                        'email',
+                        'birthday',
+                        'updated_at',
+                        'created_at',
+                        'id',
+                    ]
+                 ])
+                ->assertJson([
+                    'data' => $user->toArray()
+                 ]);
+    }
+
+    /**
+     * Test delete one user that doesn't exists
+     *
+     * @return void
+     */
+    public function testDeleteUserInvalid()
+    {
+        $response = $this->delete(route('users.destroy', 999));
+        $response->assertNotFound()
+                 ->assertJsonStructure([
+                    'message',
+                    'errors'
+                 ]);
+    }
 }
