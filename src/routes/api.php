@@ -13,6 +13,6 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('json')->namespace('Api')->group(function () use ($routes) {
+Route::middleware('json')->namespace('Api')->group(function () {
     Route::apiResource('users', 'UserController');
 });
