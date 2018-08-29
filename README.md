@@ -15,6 +15,8 @@ A API funciona com um servidor NGINX, e foi construída em PHP com o framework L
 ### Primeiros passos
 - Faça o download do zip ou clone este repositório com `git clone https://github.com/BlackBarba/ingresse-dev-test`
 - Tenha certeza que o Docker esteja rodando
+- Entre na pasta do repositório
+- Execute o comando `sudo chmod 777 src/wait-for-it.sh`
 - Execute o arquivo build.sh, `bash build.sh`
 - Espere até que todos os containers sejam montados, e que todas as dependências sejam baixadas e instaladas
 - Feito isso a aplicação ficará disponível em http://localhost:80 e o PHPMyAdmin estará disponível em http://localhost:8080
@@ -47,6 +49,9 @@ Cadastra um usuário no banco de dados, além de criar um cache de um minuto par
 #### Método
 `POST`
 #### Body
+
+O body pode ser enviado como Multipart, URL encoded ou JSON
+
 - `name` string, máximo de 255 caracteres (Obrigatório) - O nome do usuário
 - `username` string, máximo de 255 caracteres, não pode estar sendo utilizado por outro usuário, alfanumérico, sem espaços, caracteres especiais permitidos: ".-_" (Obrigatório) - O apelido do usuário
 - `email` string, máximo de 255 caracteres, não pode estar sendo utilizado por outro usuário, email válido (Obrigatório) - O email do usuário
@@ -63,6 +68,9 @@ Atualiza um usuário no banco de dados, além de criar um cache de um minuto par
 #### Parâmetros na url
 - `id` Integer (Obrigatório) - O ID do usuário que se quer atualizar as informações
 #### Body
+
+O body pode ser enviado como URL encoded ou JSON
+
 - `name` string, máximo de 255 caracteres (Obrigatório) - O nome do usuário
 - `username` string, máximo de 255 caracteres, não pode estar sendo utilizado por outro usuário, alfanumérico, sem espaços, caracteres especiais permitidos: ".-_" (Obrigatório) - O apelido do usuário
 - `email` string, máximo de 255 caracteres, não pode estar sendo utilizado por outro usuário, email válido (Obrigatório) - O email do usuário
@@ -77,3 +85,9 @@ Remove um usuário do banco de dados, além de remover o cache deste usuário, t
 `DELETE`
 #### Parâmetros na url
 - `id` Integer (Obrigatório) - O ID do usuário que se quer remover
+
+## Testes
+
+Para realizar os testes execute o comando `docker exec -it dev-test-application vendor/bin/phpunit`
+
+Os relatórios de cobertura serão gerados em:  `src/report/`, e também há os relatórios gerados pela ultima build feita no Travis CI, disponíveis através da Codecov pelo link: https://codecov.io/gh/BlackBarba/ingresse-dev-test
