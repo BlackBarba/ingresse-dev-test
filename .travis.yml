@@ -7,7 +7,7 @@ services:
 
 before_install:
     - sudo chmod 777 src/wait-for-it.sh
-    - docker-compose buid
+    - docker-compose build
     - docker-compose up -d
 
 script:
