@@ -24,7 +24,6 @@ services:
         volumes:
             - ./src:/var/www/dev-test
         working_dir: /var/www/dev-test
-        command: bash -c "composer install && ./wait-for-it.sh mysql:3306 -t 0 && php artisan migrate && php-fpm"
         networks:
             - dev-test-network
         depends_on:

@@ -1,15 +1,10 @@
 sudo: required
 
-language: php
-
 services:
     - docker
 
 before_install:
-    - sudo chmod 777 src/wait-for-it.sh
-    - docker-compose build
-    - docker-compose up -d
+    - sudo ./build.sh
 
 script:
-    - docker exec -it dev-test-application ./wait-for-it.sh nginx:80 -t 0
     - docker exec -it dev-test-application vendor/bin/phpunit
