@@ -3,6 +3,7 @@
 namespace App\Repositories;
 use App\Models\User as UserModel;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Cache;
 
 class User {
     public static function save ($params, $user = null) {
@@ -20,12 +21,25 @@ class User {
             $user->{$key} = $value;
         }
 
-        return $user->save() ? $user : false;
+        if ($user->save()) {
+            Cache::put('user:'.$user->id, $user->toArray(), 1);
+            Cache::tags('users')->flush();
+
+            return $user;
+        } else {
+            return false;
+        }
     }
     
     public static function delete ($user) {
         $user = UserModel::findOrFail($user);
 
-        return $user->delete() ? $user : false;
+        if ($user->delete()) {
+            Cache::tags('users')->flush();
+            
+            return $user;
+        } else {
+            return false;
+        }
     }
 }

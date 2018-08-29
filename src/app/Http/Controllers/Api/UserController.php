@@ -7,9 +7,13 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use App\Http\Requests\User as UserRequest;
 use App\Repositories\User as UserRepository;
+use Illuminate\Support\Facades\Cache;
+use App\Http\Controllers\Traits\Paginable;
 
 class UserController extends Controller
 {
+    use Paginable;
+
     /**
      * Display a listing of the resource.
      *
@@ -17,7 +21,12 @@ class UserController extends Controller
      */
     public function index()
     {
-        return User::paginate();
+        $perPage = $this->getPerPage();
+        $page = $this->getPage();
+        
+        return Cache::tags(['users', 'page:'.$page, 'perPage:'.$perPage])->remember('pagination', 1, function () use ($perPage) {
+            return User::paginate($perPage);
+        });
     }
 
     /**
@@ -39,7 +48,9 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        return User::findOrFail($id);
+        return Cache::remember('user:'.$id, 1, function () use ($id) {
+            return User::findOrFail($id);
+        });
     }
 
     /**

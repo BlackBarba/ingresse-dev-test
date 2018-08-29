@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Models\Traits\Paginable;
 
 class User extends Authenticatable
 {
-    use Notifiable, Paginable;
+    use Notifiable;
 
     protected $casts = [
         'birthday' => 'date:Y-m-d H:i:s',
