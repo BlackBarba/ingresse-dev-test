@@ -10,4 +10,5 @@ before_install:
     - docker-compose up -d
 
 script:
+    - src/wait-for-it.sh application:80 -t 0
     - docker exec -it dev-test-application vendor/bin/phpunit
