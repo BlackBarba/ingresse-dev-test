@@ -9,3 +9,6 @@ before_install:
 
 script:
     - docker exec -it dev-test-application vendor/bin/phpunit
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)

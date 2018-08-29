@@ -31,7 +31,7 @@
         <env name="MAIL_DRIVER" value="array"/>
     </php>
     <logging>
-        <log type="coverage-html" target="./report"
-            lowUpperBound="50" highLowerBound="80" />
+        <log type="coverage-html" target="./report" lowUpperBound="50" highLowerBound="80" />
+        <log type="coverage-clover" target="./report/clover.xml"/>
     </logging>
 </phpunit>
