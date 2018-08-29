@@ -7,8 +7,8 @@ services:
 
 before_install:
     - sudo chmod 777 src/wait-for-it.sh
-    - docker-compose up -d
+    - docker-compose up
 
 script:
-    - src/wait-for-it.sh application:80 -t 0
+    - ./src/wait-for-it.sh localhost:80 -t 0
     - docker exec -it dev-test-application vendor/bin/phpunit
