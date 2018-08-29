@@ -4,6 +4,7 @@ services:
     - docker
 
 before_install:
+    - sudo chmod 777 src/wait-for-it.sh
     - bash build.sh
 
 script:
